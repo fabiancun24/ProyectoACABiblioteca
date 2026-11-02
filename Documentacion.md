@@ -76,7 +76,7 @@
 **\[El presente proyecto tiene como finalidad, entender la problematica del constante crecimiento del flujo de informacion y la necesidad de optimizar los recursos dentro de las instituciones educativas, asi mismo dar solucion presentando un proyecto de sistema de gestion de biblioteca, atravez del desarrollo del lenguaje de programacion c#, mediante el marco de trabajo con windows form, e integracion de base de datos con SQL server.\]**
 
 -------------------------
-## OBJETIVOS
+# 2. OBJETIVOS
 
 ## 2.1 Objetivo general
 
@@ -95,3 +95,85 @@
 -   Documentar técnica y funcionalmente el proyecto.
 
 -----------------------------------------------------
+
+
+# 3. PLANTEAMIENTO DEL PROBLEMA
+
+La biblioteca actualmente presenta dificultades para administrar de
+manera organizada la información relacionada con los libros, autores,
+usuarios y préstamos. El manejo manual de esta información puede generar
+errores, pérdida de información y dificultades para conocer la
+disponibilidad de los libros.
+
+Por esta razón, se propone desarrollar una aplicación que permita
+centralizar y administrar la información de la biblioteca de manera
+organizada y eficiente.
+
+-----------------------------------------------------
+# 4. ANALISIS DE REQUERIMINTOS
+
+## Requerimientos funcionales
+
+
+RF01
+
+Libros
+
+El sistema debe permitir registrar, consultar, editar, eliminar y filtrar libros por código/ISBN, título y autor. Debe relacionar cada libro con un autor y editorial existentes.
+
+RF02
+
+Autores
+
+El sistema permitirá el CRUD completo de autores (ID, Nombre, Apellido), bloqueando la eliminación si el autor tiene libros asociados.
+
+RF03
+
+Editoriales
+
+Permite administrar editoriales respetando las restricciones de integridad relacional.
+
+RF04
+
+Usuarios
+
+Permite registrar y gestionar usuarios de la biblioteca (Documento, Nombre, Apellido, Teléfono, Correo). El documento debe ser único
+
+RF05
+
+Préstamos
+
+Registra el préstamo asociando un usuario registrado y un libro disponible. Asigna automáticamente la fecha del préstamo y estado "Prestado".
+
+RF06
+
+Devoluciones
+
+Permite modificar el estado de un préstamo activo a "Devuelto", registrar la fecha de recepción y reincorporar la disponibilidad del libro.
+
+RF07
+
+Reportes
+
+Módulo para generar consultas consolidadas: préstamos activos, historial por usuario, libros más prestados e inventario general.
+
+RF08
+
+Navegación
+
+Menú principal que permite acceder dinámicamente a todos los subsistemas.
+  -----------------------------------------------------------------------
+
+
+## 4.4 Requerimientos no funcionales
+
+  -----------------------------------------------------------------------
+RNF01 (Usabilidad): Interfaz limpia en Windows Forms con controles nativos estructurados por paneles y menús legibles.
+
+RNF02 (Seguridad/Integridad): Uso estricto de consultas parametrizadas (SqlParameter) en C# para mitigar ataques de inyección SQL.
+
+RNF03 (Mantenibilidad): Código organizado en tres capas desacopladas (Presentación, BLL, DAL) utilizando nombres descriptivos de clases y métodos en convención PascalCase/camelCase.
+
+RNF04 (Robustez): Bloques try-catch-finally en las operaciones de conexión a datos para ofrecer retroalimentación de error al usuario mediante MessageBox.
+
+----------------------------------
