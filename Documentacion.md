@@ -177,3 +177,112 @@ RNF03 (Mantenibilidad): Código organizado en tres capas desacopladas (Presentac
 RNF04 (Robustez): Bloques try-catch-finally en las operaciones de conexión a datos para ofrecer retroalimentación de error al usuario mediante MessageBox.
 
 ----------------------------------
+----------------------------------
+## 5 Diagrama de Casos de Uso
+
+### CU01 - Gestionar Libros
+
+Permite registrar, editar, listar y consultar libros en la base de datos.
+
+### CU02 - Gestionar Autores y Editoriales
+
+Administra la información de los autores y casas editoriales asociadas.
+
+### CU03 - Registrar Préstamos
+
+Asigna libros a usuarios registrados especificando fecha de préstamo y devolución.
+
+### CU04 - Registrar Devoluciones
+
+Procesa la entrega del material bibliográfico y actualiza el estado del libro.
+
+### CU05 - Consultar Reportes
+
+Genera consolidados estadísticos sobre el uso de la biblioteca.
+
+----------------------------------------------------------------------------------------------
+
+# 6. DIAGRAMA DE DATOS
+
+![Diagrama de Base de Datos](./diagrama.png)
+
+-----------------------------------------------
+-----------------------------------------------
+
+# 7. MODELO DE ENTIDAD RELACIONAL
+
+Usuario ($\underline{\text{id\_usuario}}$, nombre, documento, telefono, correo)
+
+Autor ($\underline{\text{id\_autor}}$, nombre_autor, nacionalidad)
+
+Editorial ($\underline{\text{id\_editorial}}$, nombre_editorial)
+
+Libro ($\underline{\text{id\_libro}}$, titulo, isbn, id_autor, id_editorial, estado)
+
+FK: id_autor $\rightarrow$ Autor(id_autor)
+
+FK: id_editorial $\rightarrow$ Editorial(id_editorial)
+
+Prestamo ($\underline{\text{id\_prestamo}}$, fecha_prestamo, fecha_devolucion, id_usuario, id_libro)
+
+FK: id_usuario $\rightarrow$ Usuario(id_usuario)
+
+FK: id_libro $\rightarrow$ Libro(id_libro)
+
+-----------------------------------------------
+-----------------------------------------------
+
+# 8. DICCIONARIO DE DATOS
+
+Libro--id_libro--INT--NO--PRIMARY KEY AUTO--Identificador único del libro.
+
+Libro--titulo--VARCHAR(150)--NO--Ninguna--Nombre del libro almacenado.   
+
+Libro--isbn--VARCHAR(20)--NO--UNIQUE--Código ISBN internacional.
+
+Libro--id_autor--INT--NO--FOREIGN KEY--Referencia a la tabla Autor.
+
+Prestamo--id_prestamo--INT--NO--PRIMARY KEY AUTO--Código secuencial del préstamo.
+
+-----------------------------------------------
+-----------------------------------------------
+
+# 9. ARQUITECTURA DEL SISTEMA
+
+La solución ProyectoACAbiblioteca implementa una arquitectura en 2 Capas (Presentación y Datos) basada en Windows Forms y SQL Server:
+
+   Capa de Presentación (ProyectoACAbiblioteca): Formularios de interfaz de usuario (FRMPRINCIPAL, frmLIBROS, frmPRESTAMOS, etc.) encargados de capturar las acciones del usuario e incorporar navegación dinámica mediante un panel de contenido (PNLCONTENIDO).   
+   
+   Capa de Acceso a Datos (ProyectoACAbiblioteca.DATOS): Clase de infraestructura Conexion.cs dedicada a instanciar y gestionar las conexiones físicas hacia SQL Server utilizando la librería Microsoft.Data.SqlClient.
+
+----------------------------------------------------------------------------------------------
+
+# 10. EXPLICACION DE LOS MODULOS DE DESARROLLO
+
+Explicación de los Módulos DesarrolladosMódulo Principal (FRMPRINCIPAL.cs): Contenedor MDI maestro que inicializa los componentes de interfaz, verifica la disponibilidad de la base de datos en su constructor y administra la conmutación entre pantallas mediante el método AbrirFormulario().  
+
+Módulo de Libros (frmLIBROS.cs): Permite el mantenimiento CRUD del catálogo bibliográfico.   
+
+Módulos de Soporte (frmAUTORES, frmEDITORIALES, frmUSUARIOS): Paneles para la gestión de entidades maestras.   
+
+Módulo Transaccional (frmPRESTAMOS, frmDEVOLUCIONES): Administra el flujo de circulación del material y registro de fechas.   
+
+Módulo de Reportes (frmREPORTES): Genera vistas consolidadas e indicadores de uso.
+
+----------------------------------------------------------------------------------------------
+
+# 11. CONECXION CON SQL
+
+La comunicación del sistema con el motor de base de datos se realiza a través de la clase Conexion en el namespace ProyectoACAbiblioteca.DATOS.
+
+Utiliza LocalDB / SQL Server Express mediante la cadena de conexión:
+private string cadenaConexion = @"Server=(localdb)\MSSQLLocalDB;Database=ProyectoACAbiblioteca;Integrated Security=true;TrustServerCertificate=true;";
+
+El método ObtenerConexion() retorna un objeto SqlConnection configurado, En el inicio de la aplicación se implementa un bloque using con manejo de excepciones try-catch para verificar la conectividad antes de habilitar la interfaz al usuario: 
+using (var conn = conexion.ObtenerConexion())
+{
+    conn.Open();
+    // Confirmación de enlace exitoso con el servidor SQL
+}
+
+----------------------------------------------------------------------------------------------
